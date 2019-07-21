@@ -4,34 +4,45 @@ package com.stackroute.printpages;
 public class Printer {
     private String name;
     private int tonerLevel;
-    private int amtOfPaper;
-    private int numOfPagesPrinted;
-    private boolean DoubleSided;
+    private int printedPages;
+    private boolean isDoubleSided;
 
-    public Printer(String name, int tonerLevel, int ammountOfPaper, boolean isDoubleSided) {
-        this.name = name;
-        if (tonerLevel >= 0 && tonerLevel <= 100) {
+    public Printer(String name, int tonerLevel, int printedPages, boolean isDoubleSided) {
+        if (tonerLevel > 0 && tonerLevel <= 100) {
             this.tonerLevel = tonerLevel;
+        } else {
+            this.tonerLevel = -1;
         }
-        this.amtOfPaper = ammountOfPaper;
-        this.DoubleSided = DoubleSided;
+        this.isDoubleSided = isDoubleSided;
+        this.printedPages = printedPages;
     }
 
-    private boolean toner(int numToPrintPages) {
-        if ((tonerLevel - (numOfPagesPrinted / 2) < 0)) {
-            return true;
+    public int addToner(int tonerAmount) {
+        if (tonerAmount > 0 && tonerAmount <= 100) {
+            if (this.tonerLevel + tonerAmount > 100) {
+                return -1;
+            }
+            this.tonerLevel += tonerAmount;
+            return this.tonerLevel;
         } else {
-            return false;
+            return -1;
         }
     }
 
-    private boolean tonerlevel(int numToPrint) {
-        if (((amtOfPaper - numToPrint) < 0)) {
-            return true;
-        } else {
-            return false;
+    public int print(int pages) {
+        int pagesToPrint = pages;
+        if (this.isDoubleSided) {
+            pagesToPrint = pagesToPrint / 2;
+            System.out.println("Printer is printing Both side");
         }
+        this.printedPages += pagesToPrint;
+        return pagesToPrint;
     }
+
+    public int getPrintedPages() {
+        return printedPages;
+    }
+
 }
 
 
